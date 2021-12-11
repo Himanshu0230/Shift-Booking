@@ -1,13 +1,19 @@
-import React from 'react'
+import React, {useEffect} from 'react'
+import { connect } from 'react-redux'
 import { StyleSheet, Text, View } from 'react-native'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import Helsinki from './Helsinki';
 import Tampere from './Tampere';
 import Turku from './Turku';
+import { fetchShifts } from '../redux'
+
 
 const Tab = createMaterialTopTabNavigator();
 
-const AvailableShiftsScreen = () => {
+const AvailableShiftsScreen = ({ fetchShift }) => {
+    useEffect(() => {
+        fetchShift()
+    }, [])
     return (
         <Tab.Navigator
             screenOptions={{
@@ -23,6 +29,12 @@ const AvailableShiftsScreen = () => {
     )
 }
 
-export default AvailableShiftsScreen
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchShift: () => dispatch(fetchShifts())
+    }
+}
+
+export default connect(null, mapDispatchToProps)(AvailableShiftsScreen)
 
 const styles = StyleSheet.create({})
